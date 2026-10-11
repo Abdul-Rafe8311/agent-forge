@@ -1,0 +1,37 @@
+name: Offline checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, python: '3.11'}
+          - {os: ubuntu-latest, python: '3.12'}
+          - {os: ubuntu-latest, python: '3.13'}
+          - {os: windows-latest, python: '3.13'}
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      OPENAI_API_KEY: ''
+      ANTHROPIC_API_KEY: ''
+      REDIS_URL: ''
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e '.[dev,all]'
+      - run: python -m pytest
+      - run: python -m ruff check .
+      - run: python -m ruff format --check .
+      - run: python -m mypy agentforge
+      - run: python -m build --no-isolation
+      - run: python -m twine check dist/*
+      - name: Wheel smoke check
+        run: python scripts/check_distribution.py
