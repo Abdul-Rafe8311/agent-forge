@@ -91,4 +91,4 @@ def test_missing_server_extra_is_actionable_and_help_still_works(monkeypatch):
     monkeypatch.setattr(builtins, "__import__", no_uvicorn)
     assert runner.invoke(app, ["--help"]).exit_code == 0
     result = runner.invoke(app, ["serve", "--model", "fake"])
-    assert result.exit_code == 2 and "agentforge[server]" in result.stderr
+    assert result.exit_code == 2 and "agentforge-coding[server]" in result.stderr

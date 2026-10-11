@@ -16,10 +16,10 @@ Each accepted fake request gets a fresh script; output is an offline fixture, no
 
 For the built wheel, replace the editable install with:
 ```bash
-python -m pip install "dist/agentforge-0.1.0-py3-none-any.whl[server]"
+python -m pip install "dist/agentforge_coding-0.1.0-py3-none-any.whl[server]"
 ```
 
-The public-package equivalent `pip install "agentforge[server,redis,anthropic]"` is valid only after this owner's distribution has been published under an owned name. The current PyPI name is another project.
+The public-package equivalent `pip install "agentforge-coding[server,redis,anthropic]"` is valid only after agentforge-coding has been published. The unrelated agentforge distribution must not be installed in its place. Python import and CLI names remain agentforge.
 
 ## Real operator configuration (not tested live)
 

@@ -24,7 +24,7 @@ class OpenAIProvider:
             try:
                 from openai import OpenAI
             except ImportError as exc:
-                raise ConfigurationError('Install "agentforge[openai]"') from exc
+                raise ConfigurationError('Install "agentforge-coding[openai]"') from exc
             self._client = OpenAI(api_key=key, max_retries=0)
         if not self._configured:
             self._client = self._client.with_options(max_retries=0)

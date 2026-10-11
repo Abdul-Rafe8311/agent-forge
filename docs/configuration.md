@@ -1,6 +1,6 @@
 # Configuration
 
-All constructor options are explicit; unknown keywords raise. `AgentConfig.validate_settings()` checks local configuration without requests. No automatic .env loading.
+All constructor options are explicit; unknown keywords raise. `AgentConfig.validate_settings()` checks local configuration without requests. No automatic .env loading. The distribution is agentforge-coding; Python import and CLI are agentforge. Published-package installation commands become valid only after publication.
 
 | Settings | Defaults and behavior |
 | --- | --- |

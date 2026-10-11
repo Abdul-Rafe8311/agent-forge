@@ -1,5 +1,7 @@
 # AgentForge — complete implementation prompt for Codex
 
+Distribution metadata was amended to `agentforge-coding` at the owner's request; the Python import and CLI remain `agentforge`.
+
 Copy this entire document into an AI coding agent operating in the AgentForge repository. The attached README is the product brief; the explicit contracts below resolve its missing details and contradictions.
 
 ---
@@ -428,7 +430,7 @@ python -m pip install -e ".[server,redis,anthropic]"
 agentforge serve --provider anthropic --model "$AGENTFORGE_MODEL" --project-id my-website --memory --memory-backend redis --model-context-limit "$AGENTFORGE_CONTEXT_LIMIT"
 ```
 
-Document wheel equivalents and `pip install "agentforge[server,redis,anthropic]"` only as valid after the owner's package is published. A developer still needs an installed Python runtime and a running service; downloadable does not mean a Python-free standalone binary. No Docker image, hosted service, JavaScript npm SDK, or packaging as an executable binary is required in this release.
+Document wheel equivalents and `pip install "agentforge-coding[server,redis,anthropic]"` only as valid after the owner's package is published. A developer still needs an installed Python runtime and a running service; downloadable does not mean a Python-free standalone binary. No Docker image, hosted service, JavaScript npm SDK, or packaging as an executable binary is required in this release.
 
 ### `server_schemas.py`
 
@@ -512,7 +514,7 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agentforge"
+name = "agentforge-coding"
 version = "0.1.0"
 description = "Lightweight orchestration for AI coding workflows"
 readme = "README.md"
@@ -533,7 +535,7 @@ include = ["agentforge*"]
 agentforge = ["py.typed"]
 ```
 
-Add accurate GitHub project URLs from the supplied README, classifiers, test/lint/type-check tool settings, and optional dependency tables. Check whether `agentforge` is available/owned on PyPI before proposing publication; don't rename the import automatically. If the distribution name is unavailable, report that publishing requires an owned distribution name. Local editable/wheel installation must still work. Do not upload/publish as part of this task.
+Add accurate GitHub project URLs from the supplied README, classifiers, test/lint/type-check tool settings, and optional dependency tables. Check whether `agentforge-coding` is available/owned on PyPI before proposing publication; don't rename the import automatically. If the distribution name is unavailable, report that publishing requires an owned distribution name. Local editable/wheel installation must still work. Do not upload/publish as part of this task.
 
 Development and verification commands:
 
@@ -550,7 +552,7 @@ python -m build
 python -m twine check dist/*
 ```
 
-In a fresh virtualenv outside the repository working directory, install the built wheel, verify `import agentforge`, run `agentforge --help`, `python -m agentforge --help`, and a fake-provider run. Prove base installation works without SDK/Redis extras and the installed CLI comes from the wheel, not checkout imports. Test source distribution installation as well. Document TestPyPI/PyPI upload commands in `docs/publishing.md` as maintainer-only future actions; explain editable vs wheel vs published installation. `pip install agentforge` from PyPI only works after the correct distribution has actually been published.
+In a fresh virtualenv outside the repository working directory, install the built wheel, verify `import agentforge`, run `agentforge --help`, `python -m agentforge --help`, and a fake-provider run. Prove base installation works without SDK/Redis extras and the installed CLI comes from the wheel, not checkout imports. Test source distribution installation as well. Document TestPyPI/PyPI upload commands in `docs/publishing.md` as maintainer-only future actions; explain editable vs wheel vs published installation. `pip install agentforge-coding` from PyPI only works after the correct distribution has actually been published.
 
 ## 7. Tests and acceptance criteria
 

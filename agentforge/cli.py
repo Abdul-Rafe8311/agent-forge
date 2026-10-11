@@ -151,7 +151,7 @@ def serve(
             from .server import ServerConfig, create_app
         except ImportError as exc:
             raise ConfigurationError(
-                'Install "agentforge[server]" (checkout: pip install -e ".[server]")'
+                'Install "agentforge-coding[server]" (checkout: pip install -e ".[server]")'
             ) from exc
         agent = AgentConfig(
             model=model,

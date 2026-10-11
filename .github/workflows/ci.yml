@@ -33,5 +33,5 @@ jobs:
       - run: python -m mypy agentforge
       - run: python -m build --no-isolation
       - run: python -m twine check dist/*
-      - name: Wheel smoke check
+      - name: Fresh base and server wheel/sdist checks
         run: python scripts/check_distribution.py

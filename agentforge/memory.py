@@ -156,7 +156,7 @@ class RedisMemoryBackend:
             try:
                 import redis
             except ImportError as exc:
-                raise ConfigurationError('Install "agentforge[redis]"') from exc
+                raise ConfigurationError('Install "agentforge-coding[redis]"') from exc
             self._client = redis.Redis.from_url(
                 self._url or "",
                 decode_responses=True,

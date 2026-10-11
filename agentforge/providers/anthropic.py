@@ -24,7 +24,7 @@ class AnthropicProvider:
             try:
                 from anthropic import Anthropic
             except ImportError as exc:
-                raise ConfigurationError('Install "agentforge[anthropic]"') from exc
+                raise ConfigurationError('Install "agentforge-coding[anthropic]"') from exc
             self._client = Anthropic(api_key=key, max_retries=0)
         if not self._configured:
             self._client = self._client.with_options(max_retries=0)

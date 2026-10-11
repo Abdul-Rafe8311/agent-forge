@@ -15,7 +15,7 @@ agentforge --help
 
 On Windows activate with `.venv\Scripts\Activate.ps1`. Extras: `openai`, `anthropic`, `redis`, `server`; `all` installs both SDKs, Redis, FastAPI and Uvicorn; `dev` installs verification tools and mocked-test dependencies. Example: `python -m pip install -e ".[dev,all]"`.
 
-This repository has **not been published to PyPI**. The [existing PyPI agentforge project](https://pypi.org/project/agentforge/) belongs to another project. Use this checkout or its locally built wheel; publication requires an owned distribution name.
+This repository has **not been published to PyPI**. The [existing PyPI agentforge project](https://pypi.org/project/agentforge/) belongs to another project. This distribution is now named **agentforge-coding**; Python imports and the CLI remain **agentforge**. Use this checkout or its locally built wheel until publication.
 
 ## Offline demo
 
@@ -44,7 +44,7 @@ if result.success:
 
 `AgentWrapper.run` returns an `AgentResult` containing typed artifacts, step attempts, diagnostics, status, usage, session and project IDs. `artifacts` is authoritative; `code` is one file's content or a deterministic multi-file rendering. Expected execution failures return partial accepted output. Invalid configuration raises. Wrappers are synchronous and non-reentrant; each run gets a fresh ledger.
 
-The third entry point is `optimize`. Opaque mode preserves a callback's return, signature, arguments and exceptions; optional memory/context augments its task. It cannot control the callback's model calls. Structured mode requires a keyword-only `agentforge_context` and an `AgentCallResult`, and accounts only calls routed through that context. See [API](docs/api.md) and the decorator example.
+The third entry point is `optimize`. Opaque mode preserves a callback's return, signature, arguments and exceptions; optional memory/context augments its task. It cannot control the callback's model calls. Structured mode requires a keyword-only `agentforge_context` and an `AgentCallResult`, and accounts only calls routed through that context. See [API](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/api.md) and the decorator example.
 
 ## Real providers and memory
 
@@ -56,7 +56,7 @@ Local memory defaults to the platform user-data directory, persists versioned JS
 
 One ledger covers planning, execution, repairs and integration. Fallback selects another configured model after a threshold without resetting or increasing the budget. Admission uses provider input counts or a conservative UTF-8 estimator, and clamps output against session and context allowances. Unknown dispatched usage charges the full reservation and marks accounting incomplete. Detected overspend retains actual totals and stops.
 
-Strict admission currently works with FakeProvider only; real SDK adapters reject strict mode before count/generation because their live assumptions have not been verified. Token budgets are not dollar caps; counting operations can have their own limits/costs. See [accounting](docs/token-accounting.md).
+Strict admission currently works with FakeProvider only; real SDK adapters reject strict mode before count/generation because their live assumptions have not been verified. Token budgets are not dollar caps; counting operations can have their own limits/costs. See [accounting](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/token-accounting.md).
 
 Default validation checks output structure, safe paths and Python AST syntax; other languages receive structure-only checks. Syntax cannot prove imports or behavior. `CommandValidator` is explicit opt-in and runs a subprocess, which is not a security sandbox. Files are never written without explicit export; replacement is atomic per file, not across an entire bundle.
 
@@ -72,11 +72,11 @@ agentforge serve --provider fake --model fake --project-id demo
 AGENTFORGE_URL=http://127.0.0.1:8000 node examples/javascript_client.mjs
 ```
 
-`GET /health` requires no provider calls. `POST /generate` requires bearer authentication and accepts only `{"task":"..."}`; project, keys, paths, models and budgets are operator settings. It returns artifacts without writing/executing them. One generation is allowed at a time; overlapping requests return 429. Completed run failures use HTTP 200, so clients must inspect `success` and `status`. Defaults: loopback, one worker, no reload or CORS. See [server setup and Next.js forwarding](docs/server.md).
+`GET /health` requires no provider calls. `POST /generate` requires bearer authentication and accepts only `{"task":"..."}`; project, keys, paths, models and budgets are operator settings. It returns artifacts without writing/executing them. One generation is allowed at a time; overlapping requests return 429. Completed run failures use HTTP 200, so clients must inspect `success` and `status`. Defaults: loopback, one worker, no reload or CORS. See [server setup and Next.js forwarding](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/server.md).
 
 ## Verification and roadmap
 
-All tests and demos use FakeProvider or mocked SDK/Redis clients. **Live OpenAI, Anthropic and Upstash integrations have not been tested.** No authenticated remote calls, package uploads or purchases were performed. See [verification report](docs/verification.md), [configuration](docs/configuration.md), [architecture](docs/architecture.md), [security](docs/security.md) and [packaging](docs/publishing.md).
+All automated tests and offline demos use FakeProvider or mocked SDK/Redis clients. **Live OpenAI, Anthropic and Upstash integrations have not been tested.** No authenticated remote calls, package uploads or purchases were performed. See [verification report](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/verification.md), [configuration](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/configuration.md), [architecture](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/architecture.md), [security](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/security.md) and [packaging](https://github.com/Abdul-Rafe8311/agent-forge/blob/main/docs/publishing.md).
 
 Unimplemented roadmap: Gemini, a VS Code extension, web dashboard, team memory and multi-tenant hosting. No quality or spend-reduction claims are made.
 
