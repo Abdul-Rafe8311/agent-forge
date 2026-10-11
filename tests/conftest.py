@@ -1,9 +1,16 @@
 """Fail-closed offline suite. No inherited provider/Redis/service credentials are used."""
 
 import json
+import os
+import runpy
 import socket
+from pathlib import Path
 
 import pytest
+
+offline_socketpair = runpy.run_path(
+    str(Path(__file__).resolve().parents[1] / "scripts/offline_socketpair.py")
+)["socketpair"]
 
 
 @pytest.fixture(autouse=True)
@@ -24,6 +31,8 @@ def offline_only(monkeypatch):
         monkeypatch.setattr(socket.socket, name, blocked)
     for name in ("create_connection", "getaddrinfo"):
         monkeypatch.setattr(socket, name, blocked)
+    if os.name == "nt":
+        monkeypatch.setattr(socket, "socketpair", offline_socketpair)
 
 
 def generation(

@@ -2,6 +2,9 @@
 
 Source is hosted in the existing GitHub repository. Distributions are built locally; no package uploads have been performed.
 
+For account setup, secure token authentication, reviewed uploads and fresh offline
+verification, follow the [step-by-step TestPyPI guide](testpypi.md).
+
 Editable installation links a checkout: `python -m pip install -e ".[dev,all]"`.
 A wheel installs packaged code: `python -m pip install dist/agentforge_coding-0.1.0-py3-none-any.whl`.
 Source distribution installs use `python -m pip install dist/agentforge_coding-0.1.0.tar.gz`.
@@ -13,7 +16,7 @@ python -m ruff check .
 python -m ruff format --check .
 python -m mypy agentforge
 python -m build
-python -m twine check dist/*
+python -m twine check --strict dist/*
 python scripts/check_distribution.py
 ```
 
@@ -28,8 +31,7 @@ Metadata uses setuptools/PEP 621, Python >=3.11, MIT LICENSE, typed marker py.ty
 After name ownership, release review and explicit publication authorization, maintainers could use:
 ```bash
 # Future actions only — NOT executed in this task.
-python -m twine upload --repository testpypi dist/*
-python -m twine upload dist/*
+python -m twine upload --repository testpypi dist/agentforge_coding-0.1.0-py3-none-any.whl dist/agentforge_coding-0.1.0.tar.gz
 ```
 
 Prefer an appropriate publishing credential/trusted-publishing workflow configured by the owner. Never commit keys. Public `pip install "agentforge-coding[server]"` examples are conditional on agentforge-coding being published; they are not currently instructions for installing this checkout.

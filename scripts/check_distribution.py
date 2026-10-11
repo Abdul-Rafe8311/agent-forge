@@ -66,6 +66,7 @@ def main():
             cli = binaries / ("agentforge.exe" if os.name == "nt" else "agentforge")
             requirement = str(artifact) + ("[server]" if server else "")
             run([python, "-m", "pip", "install", requirement], outside)
+            run([python, "-m", "pip", "check"], outside)
             run(
                 [
                     python,

@@ -27,6 +27,7 @@ htmlcov/
 *.key
 credentials.json
 secrets.json
+.pypirc
 
 !.env.example
 generated/

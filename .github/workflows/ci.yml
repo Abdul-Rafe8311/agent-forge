@@ -20,7 +20,9 @@ jobs:
       PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
       OPENAI_API_KEY: ''
       ANTHROPIC_API_KEY: ''
+      OPENAI_ADMIN_KEY: ''
       REDIS_URL: ''
+      AGENTFORGE_SERVER_TOKEN: ''
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -32,6 +34,6 @@ jobs:
       - run: python -m ruff format --check .
       - run: python -m mypy agentforge
       - run: python -m build --no-isolation
-      - run: python -m twine check dist/*
+      - run: python -m twine check --strict dist/*
       - name: Fresh base and server wheel/sdist checks
         run: python scripts/check_distribution.py

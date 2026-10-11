@@ -8,9 +8,9 @@ Distribution: **agentforge-coding 0.1.0**. Import/CLI: **agentforge**. Metadata,
 
 | Check | Outcome |
 | --- | --- |
-| pytest, plugin autoload disabled | 128 passed |
+| pytest, plugin autoload disabled | 130 passed |
 | Ruff check | passed |
-| Ruff format --check | 59 files formatted |
+| Ruff format --check | 62 files formatted |
 | mypy agentforge | no issues in 24 source files |
 | setuptools wheel + sdist build | both built |
 | twine check (metadata only) | both passed |
@@ -48,7 +48,11 @@ Dependency downloads needed permission outside the restricted network sandbox. T
 | pytest / Ruff / mypy | 8.3.4 / 0.17.0 / 1.19.1 |
 | build / twine / setuptools | 1.6.1 / 7.0.0 / 84.0.0 |
 
-These are actual tested sets, not proof of every version in compatibility ranges. FastAPI/Starlette emitted 172 Python 3.14 deprecation warnings concerning asyncio.iscoroutinefunction; tests passed. CI is configured for Linux Python 3.11, 3.12, 3.13 and Windows 3.13, including build and fresh base/server wheel/sdist checks. Those OS/interpreter combinations were not run on this local macOS host; inspect repository Actions for remote outcomes.
+These are actual tested sets, not proof of every version in compatibility ranges. FastAPI/Starlette emitted 172 Python 3.14 deprecation warnings concerning asyncio.iscoroutinefunction; tests passed. CI covers Linux Python 3.11, 3.12, 3.13 and Windows 3.13, including build and fresh base/server wheel/sdist checks.
+
+The [Actions run for rename commit de4e801](https://github.com/Abdul-Rafe8311/agent-forge/actions/runs/38174495890) passed all three Linux jobs. Windows passed 113 tests but failed 15 server tests because Windows asyncio creates a loopback socket pair through the patched connect method. The guard now permits only that private pair and still blocks all ordinary connections and DNS. The new regression checks exercise the fallback and confirm the guards remain active. On macOS the regression needs local loopback permission outside the restricted sandbox; no external destination is permitted. The fixed commit must pass every job in [Actions](https://github.com/Abdul-Rafe8311/agent-forge/actions/workflows/ci.yml) before release.
+
+TestPyPI preparation adds strict Twine metadata checks, `.pypirc` exclusion and a [secure account/upload/install guide](testpypi.md). Metadata remains agentforge-coding 0.1.0; no registry upload has occurred. TestPyPI download/install verification is pending an authorized upload.
 
 ## Unexercised and publication status
 

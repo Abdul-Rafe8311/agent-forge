@@ -4,12 +4,23 @@ import importlib.metadata
 import importlib.util
 import json
 import os
+import runpy
 import socket
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-for key in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_ADMIN_KEY", "REDIS_URL"):
+offline_socketpair = runpy.run_path(str(Path(__file__).with_name("offline_socketpair.py")))[
+    "socketpair"
+]
+
+for key in (
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "OPENAI_ADMIN_KEY",
+    "REDIS_URL",
+    "AGENTFORGE_SERVER_TOKEN",
+):
     os.environ.pop(key, None)
 
 
@@ -21,6 +32,8 @@ socket.socket.connect = blocked
 socket.socket.connect_ex = blocked
 socket.create_connection = blocked
 socket.getaddrinfo = blocked
+if os.name == "nt":
+    socket.socketpair = offline_socketpair
 
 import agentforge  # noqa: E402
 from agentforge.memory import LocalMemoryBackend  # noqa: E402
