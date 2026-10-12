@@ -3,8 +3,11 @@
 Distribution: **agentforge-coding 0.1.0**. Python import and CLI: **agentforge**.
 Python requires 3.11 or newer. No package has been uploaded. The upload in step 4
 is a future maintainer action requiring explicit publication authorization.
-All runtime verification uses FakeProvider; live OpenAI, Anthropic and Upstash
-integrations have not been tested.
+All automated runtime verification uses FakeProvider and mocked Redis; live
+OpenAI and Anthropic integrations have not been tested. The user separately
+reported one live Redis save/reopen/load success with seven completed client
+frames and unmeasured Upstash quota usage. That check must not be repeated during
+release preparation; see the [verification report](verification.md).
 
 ## 1. Review and build locally
 

@@ -155,6 +155,8 @@ class RedisMemoryBackend:
         if self._client is None:
             try:
                 import redis
+                from redis.backoff import NoBackoff
+                from redis.retry import Retry
             except ImportError as exc:
                 raise ConfigurationError('Install "agentforge-coding[redis]"') from exc
             self._client = redis.Redis.from_url(
@@ -164,6 +166,11 @@ class RedisMemoryBackend:
                 socket_timeout=5,
                 ssl_cert_reqs="required",
                 ssl_check_hostname=True,
+                retry=Retry(NoBackoff(), 0),
+                retry_on_error=[],
+                health_check_interval=0,
+                protocol=2,
+                driver_info=None,
             )
         return self._client
 

@@ -92,6 +92,10 @@ def test_mocked_redis_tls_timeouts_transaction_and_borrowed_cleanup():
     options = factory.call_args.kwargs
     assert options["ssl_cert_reqs"] == "required" and options["ssl_check_hostname"]
     assert options["socket_connect_timeout"] > 0 and options["socket_timeout"] > 0
+    assert options["retry"].get_retries() == 0
+    assert options["retry_on_error"] == []
+    assert options["health_check_interval"] == 0
+    assert options["protocol"] == 2 and options["driver_info"] is None
     pipe = client.pipeline.return_value.__enter__.return_value
     pipe.rpush.assert_called_once()
     pipe.ltrim.assert_called_once()

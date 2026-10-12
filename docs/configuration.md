@@ -40,4 +40,13 @@ agent = AgentWrapper(
 
 Use the Console's `rediss://username:password@hostname:port` URL. HTTPS REST URLs/tokens, plaintext Redis and URL query overrides are rejected. Explicit redis_url wins over REDIS_URL. TLS certificate and hostname verification remain enabled; connection/read timeouts are 5 seconds. Namespaced hashed project lists append/trim atomically in a transaction. Storage and entries are bounded. Neither URL nor keys enter serialized results or config repr.
 
-Redis creation is lazy, and only owned clients are closed. Mocked tests are the only verification performed. An operator may separately authorize a small read/write connection check in a disposable project after configuring their service; this can consume hosted commands and was not run.
+Redis SDK retries are explicitly zero and health polling is disabled. RESP2 and
+disabled driver metadata avoid HELLO/CLIENT SETINFO setup traffic. For a single
+optional live save/reopen/load check with FakeProvider, use the
+[Redis smoke guide](redis-memory-smoke.md); all development checks use mocks.
+
+Redis creation is lazy, and only owned clients are closed. Automated verification
+uses mocked clients only. The user reported one successful opt-in live
+save/reopen/load cycle with seven completed client command frames; Upstash quota
+usage was not measured. See the [verification report](verification.md). Do not
+repeat that live check during development, review or CI.

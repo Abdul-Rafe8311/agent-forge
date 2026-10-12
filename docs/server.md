@@ -30,7 +30,7 @@ python -m pip install -e ".[server,redis,anthropic]"
 agentforge serve --provider anthropic --model "$AGENTFORGE_MODEL" --project-id my-website --memory --memory-backend redis --model-context-limit "$AGENTFORGE_CONTEXT_LIMIT"
 ```
 
-Use the Upstash read/write rediss TCP/TLS URL. OpenAI uses the openai extra and OPENAI_API_KEY instead. Exact model availability/context must be verified by the operator. Live OpenAI, Anthropic and Upstash connections were not tested.
+Use the Upstash read/write rediss TCP/TLS URL. OpenAI uses the openai extra and OPENAI_API_KEY instead. Exact model availability/context must be verified by the operator. Live OpenAI and Anthropic connections were not tested. The user reported a separate live Redis memory smoke-test success; that does not verify a live server/provider integration. See the [verification report](verification.md).
 
 Serve flags include host/port (127.0.0.1:8000 default), model/provider, fixed project-id, memory/backend, decomposition, repairs, token budget/context window/output cap, and optional fixed codebase path/context reads. Token and provider/Redis credentials are environment-only. Token validation happens before socket binding. CORS is off; an explicit operator origins allowlist is available via ServerConfig. No wildcard origins.
 
