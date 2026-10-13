@@ -5,9 +5,11 @@ Codex allowance pilot is recorded below. The user separately reported a successf
 
 Distribution: **agentforge-coding 0.1.0**. Import/CLI: **agentforge**. Metadata, installation examples, optional-dependency errors, artifact discovery and tests use the new distribution name. Old-name generated artifacts were preserved under the ignored build directory; dist contains the renamed wheel/sdist and local checksums. The local editable environment was migrated to agentforge-coding.
 
-## Coding-agent implementation verification — 2026-10-13
+## Coding-agent implementation verification — 2026-10-14
 
-P1–P6 of the approved integration plan are implemented locally. The framework,
+P1–P6 of the approved integration plan are implemented. Final offline checks and
+publication review were completed on 2026-10-14; the three coding runs occurred
+on 2026-10-13 as recorded in the pilot report. The framework,
 provider adapters, existing memory and authenticated downloadable server are
 preserved. `assist` uses separate version-1 local session and summary storage;
 Redis is selected only explicitly and its integration tests use mocks.
