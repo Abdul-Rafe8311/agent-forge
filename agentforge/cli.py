@@ -13,6 +13,9 @@ from .core import AgentWrapper
 from .exceptions import AgentForgeError, ConfigurationError
 
 app = typer.Typer(no_args_is_help=True)
+from .assist.cli import app as assist_app  # noqa: E402
+
+app.add_typer(assist_app, name="assist")
 
 
 def _version(value: bool):

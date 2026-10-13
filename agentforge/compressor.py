@@ -44,6 +44,26 @@ _SUFFIX = {
 }
 
 
+def chunks_from_text(relative_path: str, text: str) -> list[ContextChunk]:
+    """Pure line/AST windows, reusable when a caller already performed a bounded read."""
+    lines = text.splitlines(keepends=True)
+    boundaries = []
+    if relative_path.endswith(".py"):
+        try:
+            tree = ast.parse(text)
+            boundaries = [
+                (node.lineno, getattr(node, "end_lineno", node.lineno)) for node in tree.body
+            ]
+        except SyntaxError:
+            pass
+    if not boundaries:
+        boundaries = [(i + 1, min(i + 60, len(lines))) for i in range(0, len(lines), 60)]
+    windows = [
+        (at, min(at + 59, end)) for start, end in boundaries for at in range(start, end + 1, 60)
+    ]
+    return [ContextChunk(relative_path, a, b, "".join(lines[a - 1 : b])) for a, b in windows]
+
+
 class ContextCompressor:
     def __init__(
         self,
@@ -131,26 +151,7 @@ class ContextCompressor:
         except (OSError, ValueError, UnicodeError):
             self.skipped.append(path.relative_to(self.root).as_posix())
             return []
-        lines = text.splitlines(keepends=True)
-        boundaries = []
-        if path.suffix == ".py":
-            try:
-                tree = ast.parse(text)
-                boundaries = [
-                    (node.lineno, getattr(node, "end_lineno", node.lineno)) for node in tree.body
-                ]
-            except SyntaxError:
-                pass
-        if not boundaries:
-            boundaries = [(i + 1, min(i + 60, len(lines))) for i in range(0, len(lines), 60)]
-        windows = []
-        for start, end in boundaries:
-            for at in range(start, end + 1, 60):
-                windows.append((at, min(at + 59, end)))
-        return [
-            ContextChunk(path.relative_to(self.root).as_posix(), a, b, "".join(lines[a - 1 : b]))
-            for a, b in windows
-        ]
+        return chunks_from_text(path.relative_to(self.root).as_posix(), text)
 
     def score_chunks(self, task: str, chunks: list[ContextChunk]) -> list[ContextChunk]:
         """Rank lexical overlap, then use stable filename/line tie breaks."""

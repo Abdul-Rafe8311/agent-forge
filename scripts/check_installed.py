@@ -36,6 +36,11 @@ if os.name == "nt":
     socket.socketpair = offline_socketpair
 
 import agentforge  # noqa: E402
+from agentforge.assist.packets import prepare  # noqa: E402
+from agentforge.assist.planning import complete, final_review, task_for  # noqa: E402
+from agentforge.assist.sessions import start, update_requirements  # noqa: E402
+from agentforge.assist.skill_install import install  # noqa: E402
+from agentforge.assist.validation import validate  # noqa: E402
 from agentforge.memory import LocalMemoryBackend  # noqa: E402
 
 distribution_name, expected_version = sys.argv[1:3]
@@ -72,7 +77,46 @@ with TemporaryDirectory() as directory:
     result.write_to(root / "output")
     assert (root / "output" / "hello.py").is_file()
     assert LocalMemoryBackend(root / "memory").load("installed-check")
+    project = root / "assist-project"
+    project.mkdir()
+    (project / "answer.py").write_text("answer = 42\n", encoding="utf-8")
+    prompt = root / "task.md"
+    prompt.write_text("Retain answer = 42.\n", encoding="utf-8")
+    session = start(project, prompt)
+    with session.transaction() as state:
+        requirements = state["requirements"]
+        for requirement in requirements:
+            requirement["clarification_status"] = "resolved"
+        update_requirements(session, state, requirements)
+        task = task_for(state, "task")
+        packet = prepare(session, state, task)
+        assert packet["status"] == "ready" and state["memory_backend"] == "local"
+        assert validate(session, state, task, "syntax", files=["answer.py"])["status"] == "passed"
+        assert (
+            complete(
+                session,
+                state,
+                task,
+                {
+                    "spec_hash": state["spec_hash"],
+                    "plan_version": state["plan_version"],
+                    "summary": "Offline installed fixture reviewed",
+                    "changed_files": ["answer.py"],
+                },
+            )["status"]
+            == "complete"
+        )
+        assert (
+            final_review(session, state, reviewed=True, note="Original fixture reviewed")["status"]
+            == "accepted"
+        )
+    destination = root / "skills" / "agentforge-coding"
+    install(destination)
+    assert (destination / "SKILL.md").is_file()
+    assert (destination / "references" / "workflow.md").is_file()
+    assert (destination / "agents" / "openai.yaml").is_file()
 print("Installed runtime checks passed:", agentforge.__file__)
+print("Installed local assist workflow and packaged skill checks passed.")
 
 if server:
     import asyncio

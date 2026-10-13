@@ -1,6 +1,8 @@
 # AgentForge
 
-AgentForge is a synchronous Python 3.11+ orchestration layer for AI coding workflows by **Abdul Rafe**. It provides project memory, dependency-aware sequential plans, artifact validation and bounded repairs, model routing, token accounting, and relevant source context.
+AgentForge helps an existing coding agent, starting with Codex, retrieve bounded project context, remember concise decisions, organize larger tasks, and inspect targeted validation feedback. The local `agentforge assist` helpers need no separate model API. Python 3.11+; by **Abdul Rafe**.
+
+The existing provider framework, Python API, FakeProvider examples and optional authenticated server are preserved. Their routed token accounting is separate from Codex's usage. AgentForge cannot control Codex's internal token allowance; savings and quality improvements have not been measured.
 
 ## Install from this repository
 
@@ -16,6 +18,19 @@ agentforge --help
 On Windows activate with `.venv\Scripts\Activate.ps1`. Extras: `openai`, `anthropic`, `redis`, `server`; `all` installs both SDKs, Redis, FastAPI and Uvicorn; `dev` installs verification tools and mocked-test dependencies. Example: `python -m pip install -e ".[dev,all]"`.
 
 This repository has **not been published to PyPI**. The [existing PyPI agentforge project](https://pypi.org/project/agentforge/) belongs to another project. This distribution is now named **agentforge-coding**; Python imports and the CLI remain **agentforge**. Use this checkout or its locally built wheel until publication.
+
+## Use with Codex
+
+This checkout includes `.agents/skills/agentforge-coding`. Open Codex in this repository and explicitly invoke `$agentforge-coding`. To use the packaged skill in another project:
+
+```bash
+agentforge assist install-skill --destination /absolute/project/.agents/skills/agentforge-coding
+agentforge assist --project /absolute/project start --prompt-file /private/task.md
+```
+
+Local project memory is the default, even when `REDIS_URL` exists. Originals are preserved privately; task packets contain source-linked requirements, bounded code, memory and predecessor handoffs. Semantic task planning uses Codex's own model and allowance; the helpers only scaffold and validate it. Small tasks remain unsplit. Follow the [helper workflow](docs/coding-agent-integration.md), [implementation plan](docs/coding-agent-integration-plan.md), and [three-arm benchmark protocol](docs/benchmarking.md). The [controlled pilot](docs/pilot-benchmark-2026-10-13.md) passed the same acceptance
+checks in all three conditions, but helpers used more reported tokens. No general
+savings or quality improvement is established.
 
 ## Offline demo
 

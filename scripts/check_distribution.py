@@ -11,17 +11,30 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
-env = dict(os.environ)
-for key in (
-    "OPENAI_API_KEY",
-    "ANTHROPIC_API_KEY",
-    "OPENAI_ADMIN_KEY",
-    "REDIS_URL",
-    "AGENTFORGE_SERVER_TOKEN",
-):
-    env.pop(key, None)
+env = {
+    key: os.environ[key]
+    for key in (
+        "PATH",
+        "HOME",
+        "USER",
+        "TMPDIR",
+        "TEMP",
+        "TMP",
+        "SYSTEMROOT",
+        "WINDIR",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "USERPROFILE",
+        "HOMEDRIVE",
+        "HOMEPATH",
+    )
+    if key in os.environ
+}
 env["PYTHONNOUSERSITE"] = "1"
 env["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
+env["PIP_CONFIG_FILE"] = os.devnull
+env["PIP_INDEX_URL"] = "https://pypi.org/simple"
+env["PIP_NO_INPUT"] = "1"
 env.pop("PYTHONPATH", None)
 
 
@@ -81,6 +94,7 @@ def main():
             run([cli, "--help"], outside)
             run([python, "-I", "-m", "agentforge", "--help"], outside)
             run([cli, "serve", "--help"], outside)
+            run([cli, "assist", "--help"], outside)
             data = subprocess.run(
                 [
                     str(cli),

@@ -1,10 +1,83 @@
 # Verification report
 
-Verified on macOS with Python 3.14.0. All automated provider generation/counting and Redis tests use FakeProvider or mocked official SDK clients. Tests delete inherited provider/Redis credentials and block remote connections and DNS. No live OpenAI/Anthropic endpoint was invoked. The user separately reported a successful, opt-in live Redis memory smoke test; that result and its limits are recorded below. The live check was not repeated during this review.
+Verified on macOS with Python 3.14.0. All automated provider generation/counting and Redis tests use FakeProvider or mocked official SDK clients. Tests delete inherited provider/Redis credentials and block remote connections and DNS. Automated checks did not invoke live provider endpoints. The separately authorized
+Codex allowance pilot is recorded below. The user separately reported a successful, opt-in live Redis memory smoke test; that result and its limits are recorded below. The live check was not repeated during this review.
 
 Distribution: **agentforge-coding 0.1.0**. Import/CLI: **agentforge**. Metadata, installation examples, optional-dependency errors, artifact discovery and tests use the new distribution name. Old-name generated artifacts were preserved under the ignored build directory; dist contains the renamed wheel/sdist and local checksums. The local editable environment was migrated to agentforge-coding.
 
-## Actual outcomes
+## Coding-agent implementation verification — 2026-10-13
+
+P1–P6 of the approved integration plan are implemented locally. The framework,
+provider adapters, existing memory and authenticated downloadable server are
+preserved. `assist` uses separate version-1 local session and summary storage;
+Redis is selected only explicitly and its integration tests use mocks.
+
+| Actual check | Result |
+| --- | --- |
+| Full pytest, plugin autoload disabled | 208 passed, 172 existing Python 3.14 dependency deprecation warnings |
+| New helper tests | 68 passed (included in the full count) |
+| Ruff check / format --check | passed / format --check passed |
+| mypy agentforge | passed, 38 source files |
+| Skill-creator validation, canonical and repository skill | both passed |
+| Wheel and sdist rebuild / strict metadata review | both passed |
+| Fresh base wheel / sdist outside checkout | both passed; installed local assist workflow and packaged skill exercised |
+| Fresh server-extra wheel / sdist outside checkout | both passed; installed local assist plus health/auth/FakeProvider ASGI checks |
+| Installed base without provider/Redis/server SDKs | passed |
+| Three-arm prepare/collect/compare fixtures | passed with synthetic logs; actual authorized pilot separately recorded below |
+| Git exclusions / diff whitespace / artifact contents | passed; private data, credentials and generated files excluded |
+
+Coverage includes immutable original/amendment snapshots and hash mismatch detection,
+paged source-linked requirements, strict schemas, invalid/cyclic plans and coverage,
+shared constraints, local default despite Redis configuration, mock optional Redis,
+concise redacted/stale summaries, nested ignore negation, traversal/symlink exclusions,
+scan/output bounds, missing source, dependency checks/handoff invalidation, command
+approval/environment/timeout/output limits, current acceptance evidence and final
+original-review attestation. Helper tests also cover malformed/incomplete usage,
+duplicate logs, subset counters, unavailable measurements, failed outcomes and
+mismatched comparison settings. Fixture numbers are not real agent savings.
+
+The shipped skill is explicit (`$agentforge-coding`); its installer copies packaged
+resources without changing Codex settings or overwriting custom content. The user skill was installed with the implemented installer, inspected before
+upgrade, validated, and discovered through fresh Codex app-server probes. Actual
+B/C pilot runs loaded it and used helpers from isolated projects. See [exact setup and commands](coding-agent-integration.md) and
+[comparison protocol](benchmarking.md). The user separately authorized three fresh Codex allowance runs. No separate
+provider SDK/model API, Redis connection, publication or purchase occurred. The
+source/tests/skills and sanitized reports are being committed and pushed as
+requested; raw benchmark data stays outside version control. Existing
+user-reported Redis evidence below was preserved and the live check was not repeated.
+
+Limitations: lexical search can miss relevant context; semantic extraction/planning
+requires the coding agent's model and allowance. Default scaffolding is not semantic
+decomposition. Syntax/manual review gates do not prove behavioral correctness.
+Validation staleness covers selected files; unrelated unselected dependencies are
+not automatically fingerprinted. Commands are not a security/network sandbox.
+POSIX process groups are cleaned up; Windows uses taskkill on timeout and flags
+incomplete capture. Helper I/O telemetry covers context retrieval, not all agent
+file reads. Missing/overlapping logs and omitted threads limit usage conclusions.
+MCP, automatic coding-agent execution and measured improvement remain deferred.
+**Live OpenAI and Anthropic integrations have not been tested.**
+
+Current artifacts are local agentforge-coding 0.1.0 builds containing these changes;
+build outputs remain ignored. Current source checks ran on macOS/Python 3.14, not
+all CI matrix platforms. Historical CI results below do not establish CI success
+for this implementation; current CI must be checked independently. Fresh dependency downloads used the public PyPI index;
+runtime checks removed inherited model/Redis credentials and blocked networking.
+
+### Actual authorized Codex pilot
+
+See [the complete pilot report](pilot-benchmark-2026-10-13.md) and
+[sanitized counters](pilot-results-2026-10-13.json). Codex CLI 0.162.1 used existing
+ChatGPT-managed authentication, gpt-6.1-sol/medium, isolated identical fixtures,
+A→B→C order, 900 seconds per run and no restarts. Each passed 26/26 fixed external
+acceptance methods. Observed input-plus-output totals were A 106,704, B 588,769,
+C 686,292; helper arms used more tokens. B used one card; C used three dependent
+cards. Cached input and reasoning are subsets and not counted again. C duplicated
+the original task in an expanded helper snapshot; the supplied task bytes stayed
+unchanged. Post-pilot concise output/schema/skill corrections were checked offline
+without more coding trials. No subscription-dollar or quota measurement exists.
+
+## Previous framework verification
+
 
 | Check | Outcome |
 | --- | --- |
@@ -88,7 +161,8 @@ Dependency downloads needed permission outside the restricted network sandbox. T
 | pathspec | 0.12.1 |
 | FastAPI / Starlette | 0.115.6 / 0.41.3 |
 | Uvicorn / httpx | 0.34.0 / 0.28.1 |
-| fresh server-extra smoke: FastAPI / Starlette / Uvicorn | 0.143.0 / 1.7.0 / 0.54.0 |
+| previous fresh server-extra smoke: FastAPI / Starlette / Uvicorn | 0.143.0 / 1.7.0 / 0.54.0 |
+| current fresh server-extra smoke: FastAPI / Starlette / Uvicorn | 0.143.0 / 1.8.0 / 0.54.0 |
 | pytest / Ruff / mypy | 8.3.4 / 0.17.0 / 1.19.1 |
 | build / twine / setuptools | 1.6.1 / 7.0.0 / 84.0.0 |
 

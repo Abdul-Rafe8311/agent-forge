@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agentforge-coding"
 version = "0.1.0"
-description = "Lightweight orchestration for AI coding workflows"
+description = "Local coding-agent context, memory and validation helpers with optional orchestration"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -29,6 +29,7 @@ where = ["."]
 include = ["agentforge*"]
 [tool.setuptools.package-data]
 agentforge = ["py.typed"]
+"agentforge.assist" = ["skill/SKILL.md", "skill/agents/*.yaml", "skill/references/*.md"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"

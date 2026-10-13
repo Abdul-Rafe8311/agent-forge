@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "fixture": "isolated TaskDesk filtering/sorting/pagination; 31 starting files, 20 irrelevant modules",
+  "base_commit": "9678b1bc150589d03700705d659b991c81c89a78",
+  "evaluator_sha256": "331a84c1b33f1f2657cb9627a864cca2589d29f24b3290edad537ccd8494c005",
+  "original_task_sha256": "3ce19b850b820dd5ddbef4ba2321bf09556f556b3ad880260872ad3c65c951f6",
+  "helper_wheel_sha256_at_pilot": "50d3389c1ef2544255a45af360da3a1b6af7427d1bcb56e1d85bd744212b30b7",
+  "run_order": [
+    "A",
+    "B",
+    "C"
+  ],
+  "time_limit_seconds": 900,
+  "coding_runs_launched": 3,
+  "coding_runs_restarted": 0,
+  "settings": {
+    "agent_version": "codex-cli 0.162.1",
+    "model": "gpt-6.1-sol",
+    "reasoning": "medium",
+    "sandbox": "workspace-write (temp roots excluded)",
+    "approval_policy": "never",
+    "network": "agent tools disabled; Codex authenticated transport only",
+    "tools": [
+      "command_execution",
+      "file_change",
+      "ordinary planning; agents/apps/plugins/web search disabled"
+    ],
+    "memory_seed": "empty isolated project",
+    "usage_semantics": "per_turn"
+  },
+  "conditions": [
+    {
+      "condition": "A",
+      "tests_passed": 26,
+      "tests_total": 26,
+      "completion_status": "completed",
+      "reported_usage": {
+        "input_tokens": 103358,
+        "cached_input_tokens": 70272,
+        "output_tokens": 3346,
+        "reasoning_output_tokens": 277
+      },
+      "input_plus_output_tokens": 106704,
+      "usage_coverage": {
+        "input_tokens": "complete",
+        "cached_input_tokens": "complete",
+        "output_tokens": "complete",
+        "reasoning_output_tokens": "complete"
+      },
+      "reported_user_turns": 1,
+      "wall_seconds": 85.81,
+      "observed_activity": {
+        "completed_items": {
+          "agent_message": 4,
+          "command_execution": 6,
+          "file_change": 2
+        },
+        "tool_calls_observed": 8,
+        "failed_command_executions_observed": 0,
+        "repair_attempts": null,
+        "notice": "Items are observable tools, not internal model turns or inferred repairs"
+      },
+      "session_helper_metrics": null,
+      "workflow_audit": {
+        "helper_state_present": false,
+        "installed_skill_reads_observed": 0,
+        "helper_command_items_observed": 0,
+        "fixed_evaluator_outputs_observed": [
+          {
+            "tests_run": 26,
+            "status": "passed"
+          }
+        ],
+        "source_edit_scope_review": "requested modules and own tests only",
+        "hardcoded_answers_review": "none found by source inspection and randomized-record acceptance",
+        "evaluator_unchanged": true,
+        "cross_condition_read_patterns_observed": false
+      },
+      "production_files_changed": [
+        "taskdesk/api.py",
+        "taskdesk/cli.py",
+        "taskdesk/service.py"
+      ],
+      "event_log_sha256": "bd9a7b3ad85d1ae266bcb49eef01f55e6069869bfdce40a663f57c1e0a4765bc"
+    },
+    {
+      "condition": "B",
+      "tests_passed": 26,
+      "tests_total": 26,
+      "completion_status": "completed",
+      "reported_usage": {
+        "input_tokens": 578300,
+        "cached_input_tokens": 529920,
+        "output_tokens": 10469,
+        "reasoning_output_tokens": 793
+      },
+      "input_plus_output_tokens": 588769,
+      "usage_coverage": {
+        "input_tokens": "complete",
+        "cached_input_tokens": "complete",
+        "output_tokens": "complete",
+        "reasoning_output_tokens": "complete"
+      },
+      "reported_user_turns": 1,
+      "wall_seconds": 275.098,
+      "observed_activity": {
+        "completed_items": {
+          "agent_message": 5,
+          "command_execution": 20,
+          "file_change": 4
+        },
+        "tool_calls_observed": 24,
+        "failed_command_executions_observed": 6,
+        "repair_attempts": null,
+        "notice": "Items are observable tools, not internal model turns or inferred repairs"
+      },
+      "session_helper_metrics": {
+        "calls_observed": 33,
+        "output_bytes": 69873.0,
+        "files_read": 4.0,
+        "bytes_read": 939.0,
+        "elapsed_ms": 1341.317,
+        "coverage": "complete",
+        "invalid_events": 0,
+        "history_truncated": false,
+        "notice": "Helper bytes are measured local output, not Codex token usage"
+      },
+      "workflow_audit": {
+        "helper_state_present": true,
+        "installed_skill_reads_observed": 2,
+        "helper_command_items_observed": 16,
+        "fixed_evaluator_outputs_observed": [],
+        "source_edit_scope_review": "requested modules and own tests only",
+        "hardcoded_answers_review": "none found by source inspection and randomized-record acceptance",
+        "evaluator_unchanged": true,
+        "cross_condition_read_patterns_observed": false,
+        "task_card_count": 1,
+        "planning_mode": "unsplit",
+        "handoff_count": 1,
+        "memory_backend": "local",
+        "original_task_bytes_preserved": true,
+        "task_occurrences_in_helper_snapshot": 1,
+        "snapshot_equal_supplied_task_file": true,
+        "final_review": "accepted",
+        "helper_non_success_events": {
+          "error": 2,
+          "overflow": 3,
+          "review_required": 1
+        }
+      },
+      "production_files_changed": [
+        "taskdesk/api.py",
+        "taskdesk/cli.py",
+        "taskdesk/service.py"
+      ],
+      "event_log_sha256": "32b818ed50d8badcdefcb8bb419901be08c40c3e8b064c92cac9bcf9c85adb20"
+    },
+    {
+      "condition": "C",
+      "tests_passed": 26,
+      "tests_total": 26,
+      "completion_status": "completed",
+      "reported_usage": {
+        "input_tokens": 675748,
+        "cached_input_tokens": 612992,
+        "output_tokens": 10544,
+        "reasoning_output_tokens": 1029
+      },
+      "input_plus_output_tokens": 686292,
+      "usage_coverage": {
+        "input_tokens": "complete",
+        "cached_input_tokens": "complete",
+        "output_tokens": "complete",
+        "reasoning_output_tokens": "complete"
+      },
+      "reported_user_turns": 1,
+      "wall_seconds": 262.292,
+      "observed_activity": {
+        "completed_items": {
+          "agent_message": 6,
+          "command_execution": 22,
+          "file_change": 4
+        },
+        "tool_calls_observed": 26,
+        "failed_command_executions_observed": 5,
+        "repair_attempts": null,
+        "notice": "Items are observable tools, not internal model turns or inferred repairs"
+      },
+      "session_helper_metrics": {
+        "calls_observed": 39,
+        "output_bytes": 117010.0,
+        "files_read": 14.0,
+        "bytes_read": 14385.0,
+        "elapsed_ms": 1046.051,
+        "coverage": "complete",
+        "invalid_events": 0,
+        "history_truncated": false,
+        "notice": "Helper bytes are measured local output, not Codex token usage"
+      },
+      "workflow_audit": {
+        "helper_state_present": true,
+        "installed_skill_reads_observed": 3,
+        "helper_command_items_observed": 17,
+        "fixed_evaluator_outputs_observed": [
+          {
+            "tests_run": 26,
+            "status": "passed"
+          }
+        ],
+        "source_edit_scope_review": "requested modules and own tests only",
+        "hardcoded_answers_review": "none found by source inspection and randomized-record acceptance",
+        "evaluator_unchanged": true,
+        "cross_condition_read_patterns_observed": false,
+        "task_card_count": 3,
+        "planning_mode": "agent_model",
+        "handoff_count": 3,
+        "memory_backend": "local",
+        "original_task_bytes_preserved": true,
+        "task_occurrences_in_helper_snapshot": 1,
+        "snapshot_equal_supplied_task_file": false,
+        "final_review": "accepted",
+        "helper_non_success_events": {
+          "error": 4,
+          "overflow": 2
+        }
+      },
+      "production_files_changed": [
+        "taskdesk/api.py",
+        "taskdesk/cli.py",
+        "taskdesk/service.py"
+      ],
+      "event_log_sha256": "c36f5c49011489a6d07e6ff337f5583e1f316a4742d9b33a23f771f91ee91ecd"
+    }
+  ],
+  "comparison": {
+    "status": "ok",
+    "paired_trials": [
+      {
+        "task": "taskdesk",
+        "replicate": 1,
+        "outcomes": {
+          "A": {
+            "final_status": "accepted",
+            "mandatory_passed": 26,
+            "mandatory_total": 26,
+            "regressions": 0,
+            "failed_checks": 0,
+            "repair_rounds": null,
+            "reopened_tasks": null,
+            "integration_fixes": null,
+            "operator_interventions": 0,
+            "elapsed_seconds": 85.81
+          },
+          "B": {
+            "final_status": "accepted",
+            "mandatory_passed": 26,
+            "mandatory_total": 26,
+            "regressions": 0,
+            "failed_checks": 0,
+            "repair_rounds": null,
+            "reopened_tasks": null,
+            "integration_fixes": null,
+            "operator_interventions": 0,
+            "elapsed_seconds": 275.098
+          },
+          "C": {
+            "final_status": "accepted",
+            "mandatory_passed": 26,
+            "mandatory_total": 26,
+            "regressions": 0,
+            "failed_checks": 0,
+            "repair_rounds": null,
+            "reopened_tasks": null,
+            "integration_fixes": null,
+            "operator_interventions": 0,
+            "elapsed_seconds": 262.292
+          }
+        },
+        "token_differences": {
+          "B-A": 482065,
+          "C-B": 97523,
+          "C-A": 579588
+        },
+        "saving_percent": {
+          "B-A": -451.77781526465736,
+          "C-B": -16.56388159023318,
+          "C-A": -543.1736392262709
+        },
+        "correctness_comparable": {
+          "B-A": true,
+          "C-B": true,
+          "C-A": true
+        }
+      }
+    ],
+    "median_observed_token_differences": {
+      "B-A": 482065,
+      "C-B": 97523,
+      "C-A": 579588
+    },
+    "notice": "Include failures and judge correctness/rework. No quota or savings guarantee.",
+    "benchmark_runs_launched": 0
+  },
+  "limitations": [
+    "One trial per condition, one fixture, order not counterbalanced",
+    "Backend caches were not cleared or controlled; cached tokens are included in input",
+    "Tool failures are not a count of code repair attempts; unavailable rework stays null",
+    "All runs contain one reported outer user turn, not an observed internal model-call count",
+    "C kept task bytes unchanged but duplicated them in its expanded helper snapshot",
+    "Post-pilot concise acknowledgments/schema feedback/skill guidance are offline-tested, not rerun in this pilot",
+    "Subscription quota/dollar usage unavailable; no separate model API or Redis calls"
+  ]
+}
