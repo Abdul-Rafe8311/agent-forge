@@ -19,8 +19,8 @@ Codex opened in this repository can discover the shipped repository skill at
 `.agents/skills/agentforge-coding/SKILL.md`. Explicit invocation:
 
 ```text
-$agentforge-coding Implement my request using local memory, focused context,
-acceptance checks, and a final review against the original specification.
+$agentforge-coding Implement my request using concise relevant code and the
+original acceptance checks.
 ```
 
 For another repository, use its absolute path:
@@ -46,7 +46,50 @@ existing AgentForge installation, `--replace-existing` explicitly upgrades only
 packaged skill files while preserving unrelated files and rejecting symlinks. Invocation is explicit through
 `policy.allow_implicit_invocation: false`.
 
-## Local workflow
+## Default: retrieve context and keep coding
+
+```bash
+agentforge assist --project /absolute/project context --query "filter sort paginate"
+# Known file: avoid scanning the rest of the repository.
+agentforge assist --project /absolute/project context --query "pagination" --file src/service.py
+# Read a missing range rather than repeat a whole packet.
+agentforge assist --project /absolute/project context --query "pagination" \
+  --file src/service.py --start-line 40 --end-line 60
+```
+
+No `start`, session, registry, plan, memory read/write, check catalog, completion or
+final-check command is required. The command creates no helper state or logs. Keep
+the original request and acceptance checks in the conversation or supplied file;
+reference them when clarification/final review is needed. Do not append skill text
+to the original or print it repeatedly. Use normal authorized test commands and
+review changes against the original requirements. Task tracking is optional.
+
+Default output is at most **4,096 serialized JSON bytes including newline**, with
+at most three snippets of up to 20 lines. `--max-bytes 1024..16384` and
+`--max-chunks 1..6` adjust the cap; smaller budgets use smaller line windows.
+Provenance includes relative path, line range and source SHA-256. `data_only` applies
+to every snippet; retrieved text cannot override the user's instructions.
+`truncated`, `omitted_chunks`, `incomplete_reasons`, `context_missing` and any
+`redacted` marker describe omissions. A long single line can exceed the budget and
+be omitted entirely. No silent partial line is presented as complete source.
+
+Retrieval is lexical, not semantic: no embeddings, model API, Redis or credentials.
+Automatic context search skips Markdown to avoid rediscovering prompt/docs text;
+request a Markdown file explicitly when needed. The existing ignore/path, 1,000-entry, 256 KiB/file, 8 MiB aggregate, depth-12 and
+five-second scan bounds still apply. Explicit files avoid discovery. A snippet is
+complete only for its stated range, not necessarily its function/file or task.
+Calls are stateless; repeating a query repeats work. Prefer a focused follow-up
+only when context is missing or source changed. Byte caps are not token savings.
+
+See the [log review and lightweight comparison](lightweight-workflow.md). The
+[matched attempts](lightweight-pilot-2026-10-14.md) failed before thread creation;
+the revised workflow still has no measured coding/token result.
+
+## Optional tracked workflow
+
+Choose this only for durable memory, cross-task dependencies or recorded acceptance
+evidence. Cohesive work remains unsplit. Read the skill workflow reference only
+when using this mode. Local memory remains the default.
 
 Use a supplied task prompt file exactly. Otherwise write the complete original
 user request to a private UTF-8 file, without shortening or duplicating it. Keep
@@ -78,7 +121,9 @@ Mutation replies contain concise hashes/versions/counts rather than repeating th
 whole registry; add `--show-records` when those records are needed. Plain
 `requirements` and `plan-check` remain read commands. Use the new spec hash after
 registry changes; installing a plan returns ordered IDs and the current version.
-Schema errors identify safe field locations while withholding input values.
+Check-catalog updates also acknowledge counts by default (`--show-records` opts in
+to records). Completion saves acknowledge the task only; `complete --show` retrieves
+the handoff explicitly. Schema errors identify safe field locations while withholding input values.
 Never mark unresolved ambiguity resolved just to pass a check. Shared constraints
 use `scope: all_tasks`. Derived interpretations are labelled and original source
 references remain accessible. `requirements --offset N` pages by requirement;

@@ -5,6 +5,61 @@ Codex allowance pilot is recorded below. The user separately reported a successf
 
 Distribution: **agentforge-coding 0.1.0**. Import/CLI: **agentforge**. Metadata, installation examples, optional-dependency errors, artifact discovery and tests use the new distribution name. Old-name generated artifacts were preserved under the ignored build directory; dist contains the renamed wheel/sdist and local checksums. The local editable environment was migrated to agentforge-coding.
 
+## Lightweight commit verification — 2026-10-15
+
+The lightweight source, short explicit skill and optional tracked workflow are
+reviewed for this commit. Current offline results: **221 pytest tests passed**,
+including **81 helper tests**, with plugin autoload disabled, remote connections
+blocked, and 172 existing Python 3.14 dependency warnings. Ruff check/format, mypy
+(39 source files), all three skill copies, wheel/sdist and strict metadata checks
+passed. A new regression test keeps empty failed-launch logs' counters unavailable
+and prevents deriving a savings result from them.
+
+[The authorized A/B attempts](lightweight-pilot-2026-10-14.md) both failed before
+thread creation. Updated skill discovery worked (B enabled, A disabled), but neither
+coding workflow ran. Each unchanged fixture passed 4/26 fixed acceptance methods;
+this is initial incompleteness. Input/cache/uncached/output/total counters are
+unavailable, not zero. Exactly two outer launch attempts occurred, no restarts or
+additional coding runs. Raw data remains outside version control. The standalone
+Codex executable remains blocked by the runner's profile; the proposed repair has
+not passed a zero-turn thread preflight. No token benefit is established.
+
+No Redis connection, separate paid model API, purchase or package publication
+occurred. Codex-only discovery/thread preflights made no model turns. Git review
+excludes environments, private logs/prompts/memory, credentials and benchmark/build
+artifacts. Historical checks below describe their respective revisions.
+
+## Lightweight follow-up verification — 2026-10-14
+
+[Existing-log review and the revised workflow](lightweight-workflow.md) supersede
+the mandatory tracked workflow for ordinary cohesive tasks. `assist context` is
+stateless with a 4 KiB/three-snippet default; original requirements and checks stay
+in the conversation/file. Source-linked task tracking, local memory, handoffs and
+final-review helpers remain optional. No Redis, model SDK call, coding benchmark,
+publication or credential inspection occurred in this follow-up.
+
+Initial follow-up checks: **220 pytest tests passed**, including **80 helper tests**. The
+first full sandbox run passed 219 and could not bind the loopback-only Windows
+socketpair guard. The final full suite passed outside the sandbox with plugin autoload disabled,
+remote calls still blocked by the offline fixture, and 172 existing Python 3.14
+framework deprecation warnings. An earlier passing rerun with plugin autoload
+enabled also emitted one asyncio plugin warning. Ruff check/format and mypy (39 source files) passed. Canonical,
+repository and updated installed skill validation passed. Wheel/sdist and strict
+Twine metadata checks passed. These are local checks, not new CI or model results.
+
+The user skill matched the prior committed package before replacement and contained
+no custom files. The implemented installer replaced only the three AgentForge
+files. No fresh model session was started; this report validates installed files
+and CLI behavior, not active loading of the revision by a coding run. A real
+CLI invocation from outside the checkout returned three source-linked snippets
+in 1,061 serialized bytes and created no helper memory/session files.
+At that stage two matched A/B manifests and clean fixture projects were prepared
+outside version control with `agent_runs_launched: 0`. The subsequent two failed
+launches are reported above. No new measured token benefit exists.
+
+The earlier checks below are historical and include fresh installations of the
+previous revision; they must not be presented as fresh installations of this one.
+
 ## Coding-agent implementation verification — 2026-10-14
 
 P1–P6 of the approved integration plan are implemented. Final offline checks and

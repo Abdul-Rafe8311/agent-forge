@@ -94,10 +94,11 @@ recorded original-review attestations; final helper checks were accepted. Both
 returned clearly marked packet overflows rather than silently dropping requirements.
 
 B's original snapshot exactly matched the supplied task file, with separate execution
-criteria in an amendment. C instead built an expanded snapshot containing the task
-**twice** plus execution instructions. Its task file and the original task bytes
-remained unchanged, but this duplication is an observed workflow deviation and
-avoidable overhead. It prevents treating C-B as a clean estimate of decomposition
+criteria in an amendment. C instead built a 7,213-byte expanded snapshot containing the 2,850-byte task
+once, followed by execution instructions and the full skill text. Its task file
+and original task bytes remained unchanged, but embedding the skill in the
+specification was avoidable repeated context. A subsequent inspection corrected
+the earlier claim that the original task itself appeared twice. It prevents treating C-B as a clean estimate of decomposition
 alone; it is the measured result of this agent's decomposed workflow.
 
 Recorded sessioned helper events: B **33**, C **39**. Local output was B **69,873
@@ -125,7 +126,7 @@ helper errors; C recorded two overflows and four helper errors. The original-rev
 pending gate is a deliberate stop, not a code failure.
 
 **Decomposition:** dependency validation and handoffs worked. C used more tokens than
-B, with extra cards, summaries/retrieval and duplicated specification material.
+B, with extra cards, summaries/retrieval and skill text embedded in the specification.
 This single run does not identify the contribution of each source of overhead.
 It does not justify making decomposition the default for cohesive work.
 
@@ -146,8 +147,9 @@ eligibility, and allows unavailable rework to remain null.
 After the pilot: requirement/plan updates now return concise acknowledgments instead
 of repeating whole registries/plans; original records remain available through read
 commands. Schema failures report safe known-field locations without input values.
-The skill now requires a supplied prompt file to be registered exactly, avoids
-rebuilt/duplicated originals, and explains spec-hash invalidation. Explicit installer
+The initial post-pilot skill required a supplied prompt file to be registered
+exactly, avoided rebuilt originals, and explained spec-hash invalidation. The
+lightweight revision below subsequently made registration optional. Explicit installer
 upgrades preserve unrelated content after inspection. These corrections passed
 offline regression tests, **but no additional coding benchmark was authorized or
 run**, so their effect on total usage is unmeasured.
@@ -170,3 +172,11 @@ reasoning as an output-token subset, and [usage categories](https://developers.o
 describes cached input and reasoning subsets. These sources informed counter
 interpretation; the table values came from the actual CLI events, not API requests
 made by AgentForge.
+
+## Lightweight follow-up (2026-10-14)
+
+The [existing-log analysis](lightweight-workflow.md) distinguishes repeated reads,
+setup failures and task tracking from unmeasured token attribution. The default
+skill now uses stateless context retrieval; tracking/decomposition are optional.
+An A/B comparison is prepared only. No additional coding run or savings measurement
+has been made. Historical pilot metrics above describe the old workflow.

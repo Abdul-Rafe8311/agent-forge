@@ -34,3 +34,8 @@ generated/
 output/
 .tox/
 .nox/
+.benchmarks/
+benchmark-artifacts/
+benchmark-runs/
+pilot-artifacts/
+*.events.jsonl

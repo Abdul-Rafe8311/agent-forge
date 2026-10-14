@@ -444,3 +444,23 @@ execution, publication and savings claims until authorized comparison trials. Ru
 no MCP registration, separate paid model API, Redis connection or package
 publication occurred. The three authorized Codex allowance runs are recorded
 separately; post-pilot helper corrections have only offline verification.
+
+## Lightweight revision after the pilot (2026-10-14)
+
+Completed: stateless `assist context` is the primary entry point, with a 4 KiB
+reply cap, three short source-linked windows and explicit omission markers. No
+registry, planning, memory or handoff is mandatory for cohesive tasks. Existing
+P1–P6 facilities and the provider framework/server remain available as optional
+tracked mode. The short skill progressively discloses its tracking reference.
+Original requirements/checks remain authoritative in the supplied file or
+conversation; optional registration preserves them verbatim. Catalog/completion
+mutation replies are concise.
+
+Prepared only: `benchmark prepare --workflow context` freezes matched ordinary A
+and lightweight B manifests without C or any agent launch. Inspect
+[the log review and protocol](lightweight-workflow.md). Offline checks establish
+mechanics only; this revision has no measured token benefit.
+
+The later authorized A/B launch attempts failed before thread creation.
+[The matched-pilot report](lightweight-pilot-2026-10-14.md) records the setup blocker
+and unavailable measurements. Two attempts, no restarts, no completed coding runs.

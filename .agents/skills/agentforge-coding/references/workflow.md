@@ -1,4 +1,11 @@
-# Local helper workflow
+# Optional tracked workflow
+
+Read this reference only when durable memory, dependency tracking or recorded
+acceptance evidence is useful. The default context command needs none of these
+steps. Keep cohesive work unsplit. Do not repeat original text in task cards or
+handoffs; use source references. Register a supplied prompt file exactly, without
+appending the skill or full execution instructions; use a separate amendment for
+additional approved criteria. Read registries/plans/memory only when needed.
 
 Use a Python environment containing `agentforge-coding`, with no optional provider
 SDKs required. Global helper options precede the subcommand:

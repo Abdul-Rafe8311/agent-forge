@@ -90,6 +90,55 @@ def test_three_arms_prepared_no_agent_or_model_calls(tmp_path, monkeypatch):
     ]
 
 
+def test_context_comparison_prepares_only_matched_a_b_without_launch(tmp_path, monkeypatch):
+    monkeypatch.setattr("subprocess.Popen", Mock(side_effect=AssertionError("No coding runs")))
+    prompt = tmp_path / "task.md"
+    original = b"Original requirements.\r\nAcceptance checks remain authoritative.\r\n"
+    prompt.write_bytes(original)
+    tasks = [
+        {
+            "id": "task",
+            "prompt_file": str(prompt),
+            "base_commit": "fixed",
+            "acceptance_criteria": ["Frozen evaluator passes"],
+        }
+    ]
+    directory = tmp_path / "matched"
+    result = prepare_benchmark(tasks, SETTINGS, directory, workflow="context")
+    assert result["manifests"] == 2 and result["agent_runs_launched"] == 0
+    arms = [read_json(directory / f"task-1-{a}.manifest.json") for a in "AB"]
+    assert (directory / "task.prompt.txt").read_bytes() == original
+    assert all(a["status"] == "prepared_not_run" for a in arms)
+    for key in ("base_commit", "prompt_hash", "settings_hash", "acceptance_criteria"):
+        assert arms[0][key] == arms[1][key]
+    assert [a["treatment"]["workflow"] for a in arms] == ["ordinary", "context"]
+    assert all(not a["treatment"]["decomposition"] for a in arms)
+    assert not (directory / "task-1-C.manifest.json").exists()
+    tasks_file, settings_file = tmp_path / "tasks.json", tmp_path / "settings.json"
+    tasks_file.write_text(json.dumps(tasks))
+    settings_file.write_text(json.dumps(SETTINGS))
+    cli = CliRunner().invoke(
+        app,
+        [
+            "assist",
+            "benchmark",
+            "prepare",
+            "--workflow",
+            "context",
+            "--tasks-file",
+            str(tasks_file),
+            "--settings-file",
+            str(settings_file),
+            "--output-dir",
+            str(tmp_path / "cli-matched"),
+        ],
+    )
+    assert cli.exit_code == 0, cli.output
+    assert json.loads(cli.stdout)["manifests"] == 2
+    with pytest.raises(AssistError):
+        prepare_benchmark(tasks, SETTINGS, tmp_path / "invalid", workflow="unknown")
+
+
 def test_reported_usage_not_double_counted_and_private_text_not_returned(tmp_path):
     file = log(tmp_path / "run.jsonl")
     value = collect_usage([file, file], "per_turn")
@@ -100,6 +149,27 @@ def test_reported_usage_not_double_counted_and_private_text_not_returned(tmp_pat
     assert "PRIVATE_TRANSCRIPT" not in str(value)
     assert collect_usage([file])["input_plus_output_tokens"] is None
     assert collect_usage([file], "cumulative")["input_plus_output_tokens"] is None
+
+
+def test_failed_launch_with_empty_log_has_unavailable_tokens(tmp_path):
+    directory, _ = manifests(tmp_path)
+    empty = tmp_path / "failed-launch.jsonl"
+    empty.write_bytes(b"")
+    usage = collect_usage([empty], "per_turn")
+    assert usage["turn_starts"] == usage["completed_turn_events"] == 0
+    assert all(value is None for value in usage["reported_field_sums"].values())
+    assert all(value == "unavailable" for value in usage["coverage"].values())
+    assert usage["input_plus_output_tokens"] is None
+    assert usage["activity"]["tool_calls_observed"] == 0
+    failed = {**OUTCOME, "final_status": "blocked", "mandatory_passed": 0}
+    runs = [
+        collect_run(read_json(directory / f"task-1-{arm}.manifest.json"), [empty], failed)
+        for arm in "AB"
+    ]
+    paired = compare(runs)["paired_trials"][0]
+    assert paired["saving_percent"]["B-A"] is None
+    assert paired["token_differences"]["B-A"] is None
+    assert not paired["correctness_comparable"]["B-A"]
 
 
 def test_observed_tools_and_failed_commands_are_not_inferred_repairs(tmp_path):

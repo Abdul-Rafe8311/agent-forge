@@ -19,7 +19,9 @@ FIELDS = ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_out
 SETTINGS = ("agent_version", "model", "reasoning", "sandbox", "approval_policy", "network", "tools")
 
 
-def prepare_benchmark(tasks, settings, directory: Path, replicates=1):
+def prepare_benchmark(tasks, settings, directory: Path, replicates=1, *, workflow="tracked"):
+    if workflow not in ("tracked", "context"):
+        raise AssistError("Benchmark workflow must be tracked or context")
     if not tasks or len(tasks) > 100 or replicates < 1 or replicates > 5:
         raise AssistError("Use 1-100 tasks and 1-5 repetitions")
     if any(key not in settings for key in SETTINGS):
@@ -59,7 +61,7 @@ def prepare_benchmark(tasks, settings, directory: Path, replicates=1):
         snapshot = directory / (task["id"] + ".prompt.txt")
         write_private(snapshot, data, immutable=True)
         for replicate in range(1, replicates + 1):
-            for arm in ("A", "B", "C"):
+            for arm in ("A", "B") if workflow == "context" else ("A", "B", "C"):
                 run_id = f"{task['id']}-{replicate}-{arm}"
                 manifest = {
                     "schema_version": 1,
@@ -78,6 +80,8 @@ def prepare_benchmark(tasks, settings, directory: Path, replicates=1):
                     "status": "prepared_not_run",
                     "agent_runs_launched": 0,
                 }
+                if workflow == "context":
+                    manifest["treatment"]["workflow"] = "ordinary" if arm == "A" else "context"
                 write_private(
                     directory / (run_id + ".manifest.json"), encoded(manifest), immutable=True
                 )

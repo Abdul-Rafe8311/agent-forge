@@ -1,6 +1,6 @@
 interface:
   display_name: "AgentForge Coding"
-  short_description: "Local context, memory, tasks and acceptance feedback"
-  default_prompt: "Use $agentforge-coding to implement this task with focused local context and acceptance checks."
+  short_description: "Bounded relevant code with optional task tracking"
+  default_prompt: "Use $agentforge-coding to implement this task with concise relevant code and the original acceptance checks."
 policy:
   allow_implicit_invocation: false

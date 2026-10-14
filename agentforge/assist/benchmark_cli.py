@@ -9,7 +9,7 @@ from .storage import encoded, read_json, write_private
 
 app = typer.Typer(
     no_args_is_help=True,
-    help="Prepare three arms or read existing results; never run a coding agent.",
+    help="Prepare matched comparisons or read existing results; never run a coding agent.",
 )
 
 
@@ -20,6 +20,7 @@ def prepare_command(
     settings_file: Path = typer.Option(..., "--settings-file"),
     output_dir: Path = typer.Option(..., "--output-dir"),
     replicates: int = 1,
+    workflow: str = typer.Option("tracked", help="tracked: A/B/C; context: ordinary A/context B"),
 ):
     from .cli import operation
 
@@ -27,7 +28,11 @@ def prepare_command(
         ctx,
         "benchmark-prepare",
         lambda _session, _state: prepare_benchmark(
-            read_json(tasks_file), read_json(settings_file), output_dir, replicates
+            read_json(tasks_file),
+            read_json(settings_file),
+            output_dir,
+            replicates,
+            workflow=workflow,
         ),
         needs_session=False,
     )

@@ -1,8 +1,8 @@
 # AgentForge
 
-AgentForge helps an existing coding agent, starting with Codex, retrieve bounded project context, remember concise decisions, organize larger tasks, and inspect targeted validation feedback. The local `agentforge assist` helpers need no separate model API. Python 3.11+; by **Abdul Rafe**.
+AgentForge helps an existing coding agent, starting with Codex, retrieve bounded relevant code, with optional memory, task tracking and validation feedback. The local `agentforge assist` helpers need no separate model API. Python 3.11+; by **Abdul Rafe**.
 
-The existing provider framework, Python API, FakeProvider examples and optional authenticated server are preserved. Their routed token accounting is separate from Codex's usage. AgentForge cannot control Codex's internal token allowance; savings and quality improvements have not been measured.
+The existing provider framework, Python API, FakeProvider examples and optional authenticated server are preserved. Their routed token accounting is separate from Codex's usage. AgentForge cannot control Codex's internal token allowance; No token benefit or quality improvement has been demonstrated.
 
 ## Install from this repository
 
@@ -25,12 +25,24 @@ This checkout includes `.agents/skills/agentforge-coding`. Open Codex in this re
 
 ```bash
 agentforge assist install-skill --destination /absolute/project/.agents/skills/agentforge-coding
-agentforge assist --project /absolute/project start --prompt-file /private/task.md
+agentforge assist --project /absolute/project context --query "affected symbols or behavior"
 ```
 
-Local project memory is the default, even when `REDIS_URL` exists. Originals are preserved privately; task packets contain source-linked requirements, bounded code, memory and predecessor handoffs. Semantic task planning uses Codex's own model and allowance; the helpers only scaffold and validate it. Small tasks remain unsplit. Follow the [helper workflow](docs/coding-agent-integration.md), [implementation plan](docs/coding-agent-integration-plan.md), and [three-arm benchmark protocol](docs/benchmarking.md). The [controlled pilot](docs/pilot-benchmark-2026-10-13.md) passed the same acceptance
-checks in all three conditions, but helpers used more reported tokens. No general
-savings or quality improvement is established.
+Relevant context retrieval is the default workflow: no session, decomposition or
+memory setup is required. Keep original requirements and acceptance checks
+accessible; use normal editing/testing tools. The explicit skill is concise, and
+its tracking reference is optional. Context replies default to 4 KiB/three snippets
+with source references and explicit omission markers. Local memory remains the
+default when tracking is selected, even when `REDIS_URL` exists.
+
+Follow the [helper workflow](docs/coding-agent-integration.md),
+[implementation plan](docs/coding-agent-integration-plan.md), and
+[benchmark protocol](docs/benchmarking.md). The [controlled pilot](docs/pilot-benchmark-2026-10-13.md)
+passed the same acceptance checks in all three conditions, but helpers used more
+reported tokens. The [lighter workflow and matched comparison](docs/lightweight-workflow.md)
+address observed overhead. The [matched A/B attempts](docs/lightweight-pilot-2026-10-14.md)
+failed before thread creation; token counters are unavailable. Neither was restarted.
+No token benefit is established for the revision.
 
 ## Offline demo
 

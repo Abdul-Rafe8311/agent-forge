@@ -150,7 +150,17 @@ class Repository:
             self.reasons.add("unreadable_directory")
         return found
 
-    def retrieve(self, query, requested: list[RelevantFile] | None = None, *, metadata_only=False):
+    def retrieve(
+        self,
+        query,
+        requested: list[RelevantFile] | None = None,
+        *,
+        metadata_only=False,
+        window_lines: int | None = None,
+        source_only=False,
+    ):
+        if window_lines is not None and not 1 <= window_lines <= 60:
+            raise AssistError("Source window must contain 1-60 lines")
         requested = requested or []
         explicit = {r.path: r for r in requested}
         files = []
@@ -163,7 +173,7 @@ class Repository:
                 raise AssistError("Requested file is ignored or excluded")
             files.append(path)
         if not requested:
-            files = self.discover()
+            files = [p for p in self.discover() if not source_only or p.suffix != ".md"]
         chunks = []
         for path in files:
             text = self.read(path)
@@ -183,6 +193,19 @@ class Repository:
                     chunks.append(ContextChunk(relative, at, stop, "".join(lines[at - 1 : stop])))
             else:
                 chunks.extend(chunks_from_text(relative, text))
+        if window_lines is not None:
+            from ..types import ContextChunk
+
+            windows = []
+            for chunk in chunks:
+                lines = chunk.content.splitlines(keepends=True)
+                for offset in range(0, len(lines), window_lines):
+                    part = lines[offset : offset + window_lines]
+                    start = chunk.start_line + offset
+                    windows.append(
+                        ContextChunk(chunk.path, start, start + len(part) - 1, "".join(part))
+                    )
+            chunks = windows
         ranked = ContextCompressor(self.root).score_chunks(query, chunks)
         selected: list[dict] = []
         relevant = [c for c in ranked if c.score > 0 or c.path in explicit]

@@ -29,6 +29,11 @@ def test_actual_cli_start_review_prepare_validate_complete(tmp_path):
     args = base + ["--session", session_id]
     reviewed = invoke(args + ["requirements", "--reviewed"])
     assert "requirements" not in reviewed and reviewed["requirements_updated"] > 0
+    checks_file = tmp_path / "checks.json"
+    checks_file.write_text(json.dumps([{"id": "syntax", "kind": "syntax"}]))
+    catalog = invoke(args + ["checks", "--file", str(checks_file)])
+    assert catalog["checks_registered"] == 1 and "checks" not in catalog
+    assert invoke(args + ["checks"])["checks"][0]["id"] == "syntax"
     plan = invoke(args + ["plan-check"])["plan"]
     plan["tasks"][0]["relevant_files"] = [{"path": "app.py"}]
     plan["tasks"][0]["context_queries"] = ["answer"]
@@ -47,7 +52,12 @@ def test_actual_cli_start_review_prepare_validate_complete(tmp_path):
     }
     file = tmp_path / "completion.json"
     file.write_text(json.dumps(completion))
-    invoke(args + ["complete", "--summary-file", str(file)])
+    saved = invoke(args + ["complete", "--summary-file", str(file)])
+    assert saved["handoff_saved"] and "handoff" not in saved
+    assert (
+        invoke(args + ["complete", "--show"])["completion"]["handoff"]["summary"]
+        == "answer verified"
+    )
     invoke(args + ["final-check"], expected=1)
     assert (
         invoke(args + ["final-check", "--review-original", "--note", "Checked original"])["status"]

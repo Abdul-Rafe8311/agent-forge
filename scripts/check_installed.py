@@ -36,6 +36,7 @@ if os.name == "nt":
     socket.socketpair = offline_socketpair
 
 import agentforge  # noqa: E402
+from agentforge.assist.context import context  # noqa: E402
 from agentforge.assist.packets import prepare  # noqa: E402
 from agentforge.assist.planning import complete, final_review, task_for  # noqa: E402
 from agentforge.assist.sessions import start, update_requirements  # noqa: E402
@@ -82,6 +83,9 @@ with TemporaryDirectory() as directory:
     (project / "answer.py").write_text("answer = 42\n", encoding="utf-8")
     prompt = root / "task.md"
     prompt.write_text("Retain answer = 42.\n", encoding="utf-8")
+    snippets = context(project, "answer")
+    assert snippets["chunks"][0]["path"] == "answer.py"
+    assert snippets["data_only"] and not (project / ".agentforge").exists()
     session = start(project, prompt)
     with session.transaction() as state:
         requirements = state["requirements"]

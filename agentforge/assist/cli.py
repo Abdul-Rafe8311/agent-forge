@@ -252,10 +252,22 @@ def read_spec(
 
 
 @app.command("checks")
-def checks_command(ctx: typer.Context, file: Path | None = None, approve_commands: bool = False):
+def checks_command(
+    ctx: typer.Context,
+    file: Path | None = None,
+    approve_commands: bool = False,
+    show_records: bool = False,
+):
     def work(_session, state):
         if file:
             register_checks(state, read_json(file), approve_commands=approve_commands)
+            if not show_records:
+                return {
+                    "status": "ok",
+                    "checks_registered": len(state["checks"]),
+                    "plan_version": state["plan_version"],
+                    "commands_approved": state["commands_approved"],
+                }
         return {
             "status": "ok",
             "checks": state["checks"],
@@ -322,6 +334,36 @@ def search_command(
     operation(ctx, "search", work, 16384 if include_code else 4096)
 
 
+@app.command("context")
+def context_command(
+    ctx: typer.Context,
+    query: str = typer.Option(..., "--query"),
+    file: list[str] = typer.Option([], "--file"),
+    max_bytes: int = typer.Option(4096, min=1024, max=16384),
+    max_chunks: int = typer.Option(3, min=1, max=6),
+    start_line: int | None = None,
+    end_line: int | None = None,
+):
+    """Retrieve bounded source without a session, plan or memory writes."""
+    from .context import context
+
+    operation(
+        ctx,
+        "context",
+        lambda _session, _state: context(
+            ctx.obj["project"],
+            query,
+            file,
+            max_bytes=max_bytes,
+            max_chunks=max_chunks,
+            start_line=start_line,
+            end_line=end_line,
+        ),
+        max_bytes,
+        needs_session=False,
+    )
+
+
 @app.command("validate")
 def validate_command(
     ctx: typer.Context,
@@ -360,7 +402,13 @@ def complete_command(
             return {"status": "ok", "completion": state["completions"].get(task)}
         if not summary_file:
             raise AssistError("Provide --summary-file")
-        return complete_task(session, state, task_for(state, task), read_json(summary_file))
+        result = complete_task(session, state, task_for(state, task), read_json(summary_file))
+        return {
+            "status": result["status"],
+            "task_id": task,
+            "handoff_saved": True,
+            "warning": result["warning"],
+        }
 
     operation(ctx, "complete", work)
 

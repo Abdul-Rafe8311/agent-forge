@@ -1,10 +1,36 @@
-# Three-arm comparison protocol
+# Offline comparison protocol
 
 The offline tooling prepares manifests and collects existing logs. It never launches
 Codex, model SDKs, Redis or a coding run. The authorized [2026-10-13 pilot](pilot-benchmark-2026-10-13.md) measured no token
 benefit: all conditions passed, and both helper conditions used more tokens.
 Synthetic fixture counts in automated tests still validate mechanics only.
 This tooling does not authorize additional coding runs.
+
+## Lightweight matched A/B preparation
+
+Use `benchmark prepare --workflow context` for a fresh ordinary Codex A versus
+lightweight AgentForge B comparison. The same original prompt, base revision,
+frozen evaluator and all non-helper settings apply. This mode prepares **two**
+`prepared_not_run` manifests; neither uses decomposition. Default `--workflow
+tracked` preserves the historical A/B/C protocol below.
+
+```bash
+agentforge assist benchmark prepare --workflow context \
+  --tasks-file /private/tasks.json --settings-file /private/settings.json \
+  --output-dir /private/new-matched-comparison
+```
+
+[The lightweight follow-up](lightweight-workflow.md) records the prepared fixture,
+overhead analysis and controls. The [authorized A/B attempts](lightweight-pilot-2026-10-14.md)
+failed before thread creation and produced no usage events; neither was restarted. Both
+conditions need fresh runs: the old A result cannot be a matched baseline for new
+B. Disable the installed skill in A; invoke only the short skill in B. Its optional
+tracking reference is not loaded unless needed. Inspect runtime/settings before
+any future authorized launch. Full-run token collection rules below still apply.
+Context calls are stateless and have no session helper log: count their command
+items/output from the complete agent log, not a nonexistent helper-events file.
+
+## Historical three-arm tracked comparison
 
 | Arm | Workflow |
 | --- | --- |

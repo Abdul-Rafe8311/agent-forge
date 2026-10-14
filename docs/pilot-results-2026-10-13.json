@@ -307,7 +307,7 @@
     "Backend caches were not cleared or controlled; cached tokens are included in input",
     "Tool failures are not a count of code repair attempts; unavailable rework stays null",
     "All runs contain one reported outer user turn, not an observed internal model-call count",
-    "C kept task bytes unchanged but duplicated them in its expanded helper snapshot",
+    "C kept task bytes unchanged, included them once, then appended execution instructions and full skill text to its expanded helper snapshot",
     "Post-pilot concise acknowledgments/schema feedback/skill guidance are offline-tested, not rerun in this pilot",
     "Subscription quota/dollar usage unavailable; no separate model API or Redis calls"
   ]
